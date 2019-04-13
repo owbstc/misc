@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>修改密码</title>
+    <style type="text/css">
+        form{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <form action="forgetpwd.php" method="post" onsubmit="return check()">
+        用<span style="display:inline-block;width:1em;"></span>户<span style="display:inline-block;width:1em;"></span>名: 
+        <input type="text" name="username"/><br/>
+        旧<span style="display:inline-block;width:1em;"></span>密<span style="display:inline-block;width:1em;"></span>码: 
+        <input type="password" name="old_password"/><br/>
+        新<span style="display:inline-block;width:1em;"></span>密<span style="display:inline-block;width:1em;"></span>码: 
+        <input type="password" name="password"/><br/>
+        确认新密码: <input type="password" name="repeat_password"/><br/>
+        <input type="submit" value="修改密码">
+    </form>
+
+    <script type="text/javascript">
+        window.onload = function() {
+            Ajax.post('api.php', 'c=userinfo&a=getUsername', function(res) {
+                // var res = JSON.parse(res);
+                document.getElementsByName("username")[0].value = res.data.username;
+            });
+        }
+
+        function check() {
+            var username = document.getElementsByName("username")[0].value;
+            var old_password = document.getElementsByName("old_password")[0].value;
+            var password = document.getElementsByName("password")[0].value;
+            var repeat_password = document.getElementsByName("repeat_password")[0].value;
+            var regex = /^[/s]+$/;
+
+            if(regex.test(username) || username.length  ==  0) {
+                alert("用户名格式不对");
+                return false;
+            }
+            if(regex.test(old_password) || old_password.length == 0) {
+                alert("密码格式不对");
+                return false;
+            }
+            if(regex.test(password) || password.length == 0) {
+                alert("新密码格式不对");
+                return false;
+            }
+            if (repeat_password != password || repeat_password == 0) {
+                alert("两次密码输入不一致");
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+    <script type="text/javascript">
+        var Ajax = {
+            get: function(url, fn) {
+                var xhr = getXMLHttpRequest();
+                xhr.open('GET', url);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readystate == 4 && (xhr.status == 200 || xhr.status == 304)) {
+                        fn.call(this, JSON.parse(xhr.responseText));
+                    }
+                }
+                xhr.send();
+            },
+            post: function(url, data, fn) {
+                var xhr = getXMLHttpRequest();
+                xhr.open('POST', url);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 304)) {
+                        fn.call(this, JSON.parse(xhr.responseText));
+                    }
+                }
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send(data);
+            }
+        }
+
+        function getXMLHttpRequest() {
+            if (window.ActiveXObject) {
+                return new ActiveXObject("Microsoft.XMLHTTP");
+            } else if (window.XMLHttpRequest) {
+                return new XMLHttpRequest();
+            }
+        }
+    </script>
+
+</body>
+</html>

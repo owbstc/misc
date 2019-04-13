@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>注册界面</title>
+    <style type="text/css">
+        form {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <form action="register.php" method="post" name="form_register" onsubmit="return check()">
+        用<span style="display:inline-block;width:0.5em;"></span>户<span style="display:inline-block;width:0.5em;"></span>名: 
+        <input type="text" name="username"><br>
+        密<span style="display:inline-block;width:2em;"></span>码: 
+        <input type="password" name="password"><br>
+        确认密码: <input type="password" name="repeat_password"><br>
+        <input type="submit" value="注册">
+    </form>
+
+    <script type="text/javascript">
+        function check() {
+            var username = document.getElementsByName("username")[0].value;
+            var password = document.getElementsByName("password")[0].value;
+            var repeat_password = document.getElementsByName("repeat_password")[0].value;
+            var regex = /^[/s]+$/;
+
+            if(regex.test(username) || username.length == 0){
+                alert("用户名格式不对");
+                return false;
+            }
+            if(regex.test(password) || password.length == 0){
+                alert("密码格式不对");
+                return false;
+            }
+            if(password != repeat_password){
+                alert("两次密码不一致");
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+</body>
+</html>
